@@ -12,11 +12,6 @@
 
 #include "philosophers.h"
 
-void	start_dinner(t_philo *philos)
-{
-	
-}
-
 int	main(int argc, char **argv)
 {
 	t_data	data;

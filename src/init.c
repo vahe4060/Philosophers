@@ -60,14 +60,15 @@ int	init_args(int argc, char **argv, t_data *data)
 	if (!status)
 		data->n_philos = to_uint(argv[1], &status);
 	if (!status)
-		data->think_time = to_uint(argv[2], &status);
+		data->time_to_die = to_uint(argv[2], &status);
 	if (!status)
 		data->eat_time = to_uint(argv[3], &status);
 	if (!status)
 		data->sleep_time = to_uint(argv[4], &status);
-	data->n_dinners = 0;
+	data->n_meals = -1;
 	if (!status && argc == 6)
-		data->n_dinners = to_uint(argv[5], &status);
+		data->n_meals = to_uint(argv[5], &status);
+	dead_philo_id->dead_philo_id = -1;
 	return (status);
 }
 
@@ -94,8 +95,8 @@ int init_philos(t_data *data)
 	{
 		data->philos[i].data = data;
 		data->philos[i].id = i;
-		data->philos[i].status = sleeping;
-		data->philos[i].eat_count = 0;
+		data->philos[i].status = thinking;
+		data->philos[i].n_meals = data.n_meals;
 		++i;
 	}
 	return (EXIT_SUCCESS);
