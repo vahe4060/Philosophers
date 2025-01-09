@@ -10,7 +10,7 @@ void    ft_putnbr(unsigned int n)
     write(1, &c, 1);
 }
 
-void	sleep(t_philo *philo)
+void	dream(t_philo *philo)
 {
     philo->status = sleeping;
     ft_putnbr(philo->id);
@@ -31,7 +31,7 @@ void	eat(t_philo *philo)
         message(" is eating.\n");
         philo->status = eating;
         usleep(philo->data->eat_time * 1000);
-        if (philos->n_meals > 0)
+        if (philo->n_meals > 0)
            philo->n_meals--;
         pthread_mutex_unlock(philo->r_fork);
         pthread_mutex_unlock(philo->l_fork);
@@ -54,7 +54,7 @@ void    *routine(void *philo)
     while (p->data->dead_philo_id == -1)
     {
         eat(p);
-        sleep(p);
+        dream(p);
         think(p);
     }
     return (NULL);

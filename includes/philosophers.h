@@ -39,7 +39,7 @@ struct s_philo;
 
 typedef struct	s_data
 {
-	unsigned int	n_philos;
+	int				n_philos;
 	unsigned int	time_to_die;
 	unsigned int	eat_time;
 	unsigned int	sleep_time;
@@ -66,7 +66,7 @@ void	message(char *msg);
 int		init_args(int argc, char **argv, t_data *data);
 int		init_philos(t_data *data);
 
-void	sleep(t_philo *philo);
+void	dream(t_philo *philo);
 void	eat(t_philo *philo);
 void	think(t_philo *philo);
 void	*routine(void *philo);

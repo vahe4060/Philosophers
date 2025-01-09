@@ -1,12 +1,13 @@
 TARGET := philosophers
 CC := gcc
-CFLAGS := -Wall -Wextra #-Werror
+CFLAGS := -O3 -pthread -Wno-unused-result -Wall -Wextra #-Werror 
 
-INC_DIR = includes/
-SRC_DIR = src/
+INC_DIR = includes
+SRC_DIR = src
 INC = $(INC_DIR)/philosophers.h
 SRC = $(SRC_DIR)/main.c \
-	  $(SRC_DIR)/init.c
+	  $(SRC_DIR)/init.c \
+	  $(SRC_DIR)/routine.c
 OBJ = $(SRC:.c=.o)
 
 

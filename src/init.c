@@ -68,13 +68,13 @@ int	init_args(int argc, char **argv, t_data *data)
 	data->n_meals = -1;
 	if (!status && argc == 6)
 		data->n_meals = to_uint(argv[5], &status);
-	dead_philo_id->dead_philo_id = -1;
+	data->dead_philo_id = -1;
 	return (status);
 }
 
 int init_philos(t_data *data)
 {
-	unsigned int	i;
+	int	i;
 
 	data->tid = (pthread_t *)malloc(sizeof(pthread_t) * data->n_philos);
 	data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * 
@@ -96,7 +96,7 @@ int init_philos(t_data *data)
 		data->philos[i].data = data;
 		data->philos[i].id = i;
 		data->philos[i].status = thinking;
-		data->philos[i].n_meals = data.n_meals;
+		data->philos[i].n_meals = data->n_meals;
 		++i;
 	}
 	return (EXIT_SUCCESS);

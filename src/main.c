@@ -19,7 +19,7 @@ int	main(int argc, char **argv)
 	if (init_args(argc, argv, &data) == EXIT_SUCCESS)
 	{
 		if (init_philos(&data) == EXIT_SUCCESS)
-			start_dinner(data.philos);
+			start_dinner(&data);
 		else
 			message(MALLOC_ERROR);
 	}
