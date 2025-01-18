@@ -76,11 +76,14 @@ int init_philos(t_data *data)
 {
 	int	i;
 
-	data->tid = (pthread_t *)malloc(sizeof(pthread_t) * data->n_philos);
+	data->philo_threads = (pthread_t *)malloc(sizeof(pthread_t)
+											  * data->n_philos);
+	data->monitor_thread = (pthread_t *)malloc(sizeof(pthread_t));
 	data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * 
 			data->n_philos);
 	data->philos = (t_philo *)malloc(sizeof(t_philo) * data->n_philos);
-	if (!data->tid || !data->forks || !data->philos)
+	if (!data->monitor_thread || !data->philo_threads
+		|| !data->forks || !data->philos)
 		return (EXIT_FAILURE);
 	data->philos[0].l_fork = &data->forks[0];
 	data->philos[0].r_fork = &data->forks[data->n_philos - 1];
@@ -97,6 +100,7 @@ int init_philos(t_data *data)
 		data->philos[i].id = i;
 		data->philos[i].status = thinking;
 		data->philos[i].n_meals = data->n_meals;
+		data->philos[i].last_meal = get_current_time();
 		++i;
 	}
 	return (EXIT_SUCCESS);

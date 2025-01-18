@@ -10,6 +10,15 @@ void    ft_putnbr(unsigned int n)
     write(1, &c, 1);
 }
 
+size_t	get_current_time(void)
+{
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL) == -1)
+		write(2, "gettimeofday() error\n", 22);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+}
+
 void	dream(t_philo *philo)
 {
     philo->status = sleeping;
@@ -20,14 +29,16 @@ void	dream(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-    ft_putnbr(philo->id);
-    if (philo->n_meals == 0)
-        message(" has taken all its meals, skipping.\n");
+    if (philo->n_meals == 0) {
+        ft_putnbr(philo->id);
+        message(" has taken all its meals.\n");
+    }
     else
     {
         pthread_mutex_lock(philo->r_fork);
         pthread_mutex_lock(philo->l_fork);
         philo->status = eating;
+        ft_putnbr(philo->id);
         message(" is eating.\n");
         philo->status = eating;
         usleep(philo->data->eat_time * 1000);
@@ -35,6 +46,7 @@ void	eat(t_philo *philo)
            philo->n_meals--;
         pthread_mutex_unlock(philo->r_fork);
         pthread_mutex_unlock(philo->l_fork);
+        philo->last_meal = get_current_time();
     }
 }
 
@@ -53,17 +65,43 @@ void    *routine(void *philo)
 
     while (p->data->dead_philo_id == -1)
     {
-        eat(p);
-        dream(p);
-        think(p);
+        if (p->data->philos[p->id].n_meals >= 0) {
+            eat(p);
+            dream(p);
+            think(p);
+        }
     }
-    return (NULL);
+    return (philo);
+}
+
+void    *monitor(void *data)
+{
+    t_data  *d;
+    int     i;
+
+    d = (t_data *)data;
+    while (d->dead_philo_id == -1)
+    {
+        i = -1;
+        while (++i < d->n_philos)
+        {
+            if (d->philos[i].n_meals > 0
+                && get_current_time() - d->philos[i].last_meal > d->time_to_die)
+            {
+                d->dead_philo_id = i;
+                ft_putnbr(i);
+                message(" died.\n");
+                break ;
+            }
+        }
+    }
+    return (data);
 }
 
 void    start_dinner(t_data *data)
 {
     int    i;
-
+    pthread_create(data->monitor_thread, NULL, monitor, data);
     i = -1;
     while (++i < data->n_philos)
         pthread_create(&data->philos[i].thread, NULL, routine, &data->philos[i]);

@@ -19,14 +19,13 @@
 #include <sys/time.h>
 
 #define USAGE "Usage:\n\
-	./philosophers [NUM_PHILOS] [TIME_TO_DIE] [TIME_TO_EAT]\
-[TIME_TO_SLEEP] [[NUM_MEALS]]\n\n\
-	NUM_PHILOS	- number of philosophers\n\
-	TIME_TO_DIE	- maximum time each philosopher can spend \
-hungry/thinking (ms)\n\
-	TIME_TO_EAT	- time each philosopher spends eating (ms)\n\
-	TIME_TO_SLEEP	- time each philosopher spends sleeping (ms)\n\
-	[NUM_MEALS]	- optional, number of meals for each philosopher.\n"
+\t./philosophers [NUM_PHILOS] [TIME_TO_DIE] [TIME_TO_EAT]\
+[TIME_TO_SLEEP] [[NUM_MEALS]]\n\
+NUM_PHILOS\t- number of philosophers\n\
+TIME_TO_DIE\t- maximum time each philosopher can spend hungry/thinking (ms)\n\
+TIME_TO_EAT\t- time each philosopher spends eating (ms)\n\
+TIME_TO_SLEEP\t- time each philosopher spends sleeping (ms)\n\
+[NUM_MEALS]\t- optional, number of meals for each philosopher.\n"
 #define MALLOC_ERROR "Memory Error\n"
 
 typedef enum s_status {
@@ -46,7 +45,8 @@ typedef struct	s_data
 	int				n_meals;
 	int				dead_philo_id;
 	struct s_philo	*philos;
-	pthread_t		*tid;
+	pthread_t		*philo_threads;
+	pthread_t		*monitor_thread;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	*is_running_mutex;
 } t_data;
@@ -54,17 +54,19 @@ typedef struct	s_data
 typedef struct	s_philo
 {
 	unsigned int	id;
-	unsigned int	n_meals;
+	int				n_meals;
 	t_status		status;
 	t_data			*data;
 	pthread_t		thread;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
+	size_t			last_meal;
 } t_philo;
 
 void	message(char *msg);
 int		init_args(int argc, char **argv, t_data *data);
 int		init_philos(t_data *data);
+size_t	get_current_time(void);
 
 void	dream(t_philo *philo);
 void	eat(t_philo *philo);
