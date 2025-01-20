@@ -1,4 +1,4 @@
-*.o
-*.swp
+*/*.o
+*/*.swp
 .vscode
 philosophers
