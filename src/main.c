@@ -21,9 +21,9 @@ int	main(int argc, char **argv)
 		if (init_philos(&data) == EXIT_SUCCESS)
 			start_dinner(&data);
 		else
-			message(MALLOC_ERROR);
+			write(1, MALLOC_ERROR, ft_strlen(MALLOC_ERROR));
 	}
 	else
-		message(USAGE);
+		write(1, USAGE, ft_strlen(USAGE));
 	return (0);
 }

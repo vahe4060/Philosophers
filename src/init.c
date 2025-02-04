@@ -45,9 +45,25 @@ size_t	ft_strlen(const char *c)
 	return (size);
 }
 
-void	message(char *msg)
+void    ft_putnbr(unsigned int n)
 {
+    char    c;
+
+    if (n > 9)
+        ft_putnbr(n / 10);
+    c = n % 10 + '0';
+    write(1, &c, 1);
+}
+
+void	message(unsigned int id, char *msg)
+{
+	static pthread_mutex_t print_mutex = PTHREAD_MUTEX_INITIALIZER;
+	pthread_mutex_lock(&print_mutex);
+	ft_putnbr(id);
+	write(1, " ", 1);
 	write(1, msg, ft_strlen(msg));
+	write(1, "\n", 1);
+	pthread_mutex_unlock(&print_mutex);
 }
 
 int	init_args(int argc, char **argv, t_data *data)

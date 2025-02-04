@@ -1,45 +1,33 @@
 #include "philosophers.h"
 
-void    ft_putnbr(unsigned int n)
-{
-    char    c;
-
-    if (n > 9)
-        ft_putnbr(n / 10);
-    c = n % 10 + '0';
-    write(1, &c, 1);
-}
 
 size_t	get_current_time(void)
 {
 	struct timeval	time;
 
 	if (gettimeofday(&time, NULL) == -1)
-		write(2, "gettimeofday() error\n", 22);
+		write(1, "gettimeofday() error\n", 22);
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
 void	dream(t_philo *philo)
 {
     philo->status = sleeping;
-    ft_putnbr(philo->id);
-    message(" is sleeping.\n");
+    message(philo->id, "is sleeping.");
     usleep(philo->data->sleep_time * 1000);
 }
 
 void	eat(t_philo *philo)
 {
     if (philo->n_meals == 0) {
-        ft_putnbr(philo->id);
-        message(" has taken all its meals.\n");
+        message(philo->id, "has taken all its meals.\n");
     }
     else
     {
         pthread_mutex_lock(philo->r_fork);
         pthread_mutex_lock(philo->l_fork);
         philo->status = eating;
-        ft_putnbr(philo->id);
-        message(" is eating.\n");
+        message(philo->id, "is eating.");
         philo->status = eating;
         usleep(philo->data->eat_time * 1000);
         if (philo->n_meals > 0)
@@ -53,8 +41,7 @@ void	eat(t_philo *philo)
 void	think(t_philo *philo)
 {
     philo->status = thinking;
-    ft_putnbr(philo->id);
-    message(" is thinking.\n");
+    message(philo->id, "is thinking.");
 }
 
 void    *routine(void *philo)
@@ -65,7 +52,7 @@ void    *routine(void *philo)
 
     while (p->data->dead_philo_id == -1)
     {
-        if (p->data->philos[p->id].n_meals >= 0) {
+        if (p->data->philos[p->id].n_meals != 0) {
             eat(p);
             dream(p);
             think(p);
@@ -89,8 +76,7 @@ void    *monitor(void *data)
                 && get_current_time() - d->philos[i].last_meal > d->time_to_die)
             {
                 d->dead_philo_id = i;
-                ft_putnbr(i);
-                message(" died.\n");
+                message(d->philos[i].id, "died.");
                 break ;
             }
         }
