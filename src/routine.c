@@ -13,21 +13,22 @@ size_t	get_current_time(void)
 void	dream(t_philo *philo)
 {
     philo->status = sleeping;
-    message(philo->id, "is sleeping.");
+    // message(philo->id, "is sleeping.");
     usleep(philo->data->sleep_time * 1000);
 }
 
 void	eat(t_philo *philo)
 {
     if (philo->n_meals == 0) {
-        message(philo->id, "has taken all its meals.\n");
+        // message(philo->id, "has taken all its meals.\n");
+        philo->status = finished;
     }
     else
     {
         pthread_mutex_lock(philo->r_fork);
         pthread_mutex_lock(philo->l_fork);
         philo->status = eating;
-        message(philo->id, "is eating.");
+        // message(philo->id, "is eating.");
         philo->status = eating;
         usleep(philo->data->eat_time * 1000);
         if (philo->n_meals > 0)
@@ -41,7 +42,7 @@ void	eat(t_philo *philo)
 void	think(t_philo *philo)
 {
     philo->status = thinking;
-    message(philo->id, "is thinking.");
+    // message(philo->id, "is thinking.");
 }
 
 void    *routine(void *philo)
@@ -65,20 +66,24 @@ void    *monitor(void *data)
 {
     t_data  *d;
     int     i;
+    int     dead_philo_id;
 
+    dead_philo_id = -1;
     d = (t_data *)data;
-    while (d->dead_philo_id == -1)
+    while (dead_philo_id < 0)
     {
+        log_time(d->start_time);
         i = -1;
         while (++i < d->n_philos)
         {
             if (d->philos[i].n_meals > 0
                 && get_current_time() - d->philos[i].last_meal > d->time_to_die)
             {
-                d->dead_philo_id = i;
-                message(d->philos[i].id, "died.");
-                break ;
+                dead_philo_id = i;
+                d->philos[i].status = dead;
+                // message(d->philos[i].id, "died.");
             }
+            log_philo_status(&d->philos[i]);
         }
     }
     return (data);
@@ -87,6 +92,8 @@ void    *monitor(void *data)
 void    start_dinner(t_data *data)
 {
     int    i;
+
+    data->start_time = get_current_time();
     pthread_create(data->monitor_thread, NULL, monitor, data);
     i = -1;
     while (++i < data->n_philos)

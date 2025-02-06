@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "philosophers.h"
+#include <stdio.h>
 
 unsigned int	to_uint(char *str, int *status)
 {
@@ -45,7 +46,7 @@ size_t	ft_strlen(const char *c)
 	return (size);
 }
 
-void    ft_putnbr(unsigned int n)
+void    ft_putnbr(unsigned long int n)
 {
     char    c;
 
@@ -55,14 +56,26 @@ void    ft_putnbr(unsigned int n)
     write(1, &c, 1);
 }
 
-void	message(unsigned int id, char *msg)
+void	log_philo_status(t_philo *philo)
 {
 	static pthread_mutex_t print_mutex = PTHREAD_MUTEX_INITIALIZER;
 	pthread_mutex_lock(&print_mutex);
-	ft_putnbr(id);
-	write(1, " ", 1);
-	write(1, msg, ft_strlen(msg));
+	write(1, "Philo ", 6);
+	ft_putnbr(philo->id);
+	write(1, ": ", 2);
+	write(1, status_str[philo->status],	
+		  ft_strlen(status_str[philo->status]));
 	write(1, "\n", 1);
+	pthread_mutex_unlock(&print_mutex);
+}
+
+void	log_time(long int start_time)
+{
+	static pthread_mutex_t print_mutex = PTHREAD_MUTEX_INITIALIZER;
+	pthread_mutex_lock(&print_mutex);
+	write(1, "Time: ", 6);
+	ft_putnbr(get_current_time() - start_time);
+	write(1, "ms\n", 3);
 	pthread_mutex_unlock(&print_mutex);
 }
 

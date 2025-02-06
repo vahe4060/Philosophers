@@ -31,8 +31,18 @@ TIME_TO_SLEEP\t- time each philosopher spends sleeping (ms)\n\
 typedef enum s_status {
 	eating = 0,
 	sleeping,
-	thinking
+	thinking,
+	dead,
+	finished
 } t_status;
+
+static const char status_str[5][10] = {
+	"eating   ",
+	"sleeping ",
+	"thinking ",
+	"dead     ",
+	"finished "
+};
 
 struct s_philo;
 
@@ -44,6 +54,7 @@ typedef struct	s_data
 	unsigned int	sleep_time;
 	int				n_meals;
 	int				dead_philo_id;
+	size_t			start_time;
 	struct s_philo	*philos;
 	pthread_t		*philo_threads;
 	pthread_t		*monitor_thread;
@@ -64,7 +75,8 @@ typedef struct	s_philo
 } t_philo;
 
 size_t	ft_strlen(const char *c);
-void	message(unsigned int id, char *msg);
+void	log_philo_status(t_philo *philo);
+void	log_time(long int start_time);
 int		init_args(int argc, char **argv, t_data *data);
 int		init_philos(t_data *data);
 size_t	get_current_time(void);
