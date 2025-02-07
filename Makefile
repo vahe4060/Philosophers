@@ -11,6 +11,7 @@ INC = $(INC_DIR)/philosophers.h \
 	  $(INC_DIR)/structs.h
 SRC = main.c \
       init.c \
+	  utils.c \
       routine.c
 OBJ = $(SRC:%.c=$(BUILD_DIR)/%.o)
 
