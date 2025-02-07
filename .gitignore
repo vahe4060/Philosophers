@@ -1,6 +1,7 @@
 */*.o
 */*.swp
 */*.out
+*.log
 build
 philosophers
 .vscode

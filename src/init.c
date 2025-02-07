@@ -11,9 +11,8 @@
 /* ************************************************************************** */
 
 #include "philosophers.h"
-#include <stdio.h>
 
-unsigned int	to_uint(char *str, int *status)
+unsigned int    to_uint(const char *str, int *status)
 {
 	long	number;
 
@@ -56,16 +55,22 @@ void    ft_putnbr(unsigned long int n)
     write(1, &c, 1);
 }
 
+void	message(const char *str)
+{
+	write(1, str, ft_strlen(str));
+}
+
 void	log_philo_status(t_philo *philo)
 {
 	static pthread_mutex_t print_mutex = PTHREAD_MUTEX_INITIALIZER;
 	pthread_mutex_lock(&print_mutex);
-	write(1, "Philo ", 6);
+	message("Philo ");
 	ft_putnbr(philo->id);
-	write(1, ": ", 2);
-	write(1, status_str[philo->status],	
-		  ft_strlen(status_str[philo->status]));
-	write(1, "\n", 1);
+	message(": ");
+	message(color[philo->status]);
+	message(status_str[philo->status]);
+	message(color[5]);
+	message("\n");
 	pthread_mutex_unlock(&print_mutex);
 }
 
@@ -73,9 +78,9 @@ void	log_time(long int start_time)
 {
 	static pthread_mutex_t print_mutex = PTHREAD_MUTEX_INITIALIZER;
 	pthread_mutex_lock(&print_mutex);
-	write(1, "Time: ", 6);
+	message("Time: ");
 	ft_putnbr(get_current_time() - start_time);
-	write(1, "ms\n", 3);
+	message("ms\n");
 	pthread_mutex_unlock(&print_mutex);
 }
 
@@ -97,7 +102,6 @@ int	init_args(int argc, char **argv, t_data *data)
 	data->n_meals = -1;
 	if (!status && argc == 6)
 		data->n_meals = to_uint(argv[5], &status);
-	data->dead_philo_id = -1;
 	return (status);
 }
 

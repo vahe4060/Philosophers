@@ -1,6 +1,5 @@
 #include "philosophers.h"
 
-
 size_t	get_current_time(void)
 {
 	struct timeval	time;
@@ -13,14 +12,12 @@ size_t	get_current_time(void)
 void	dream(t_philo *philo)
 {
     philo->status = sleeping;
-    // message(philo->id, "is sleeping.");
     usleep(philo->data->sleep_time * 1000);
 }
 
 void	eat(t_philo *philo)
 {
     if (philo->n_meals == 0) {
-        // message(philo->id, "has taken all its meals.\n");
         philo->status = finished;
     }
     else
@@ -28,10 +25,8 @@ void	eat(t_philo *philo)
         pthread_mutex_lock(philo->r_fork);
         pthread_mutex_lock(philo->l_fork);
         philo->status = eating;
-        // message(philo->id, "is eating.");
-        philo->status = eating;
         usleep(philo->data->eat_time * 1000);
-        if (philo->n_meals > 0)
+        if (philo->n_meals > 0) // if num_meals is set
            philo->n_meals--;
         pthread_mutex_unlock(philo->r_fork);
         pthread_mutex_unlock(philo->l_fork);
@@ -42,7 +37,6 @@ void	eat(t_philo *philo)
 void	think(t_philo *philo)
 {
     philo->status = thinking;
-    // message(philo->id, "is thinking.");
 }
 
 void    *routine(void *philo)
@@ -51,13 +45,11 @@ void    *routine(void *philo)
 
     p = (t_philo *)philo;
 
-    while (p->data->dead_philo_id == -1)
+    while (p->status != finished)
     {
-        if (p->data->philos[p->id].n_meals != 0) {
-            eat(p);
-            dream(p);
-            think(p);
-        }
+        eat(p);
+        dream(p);
+        think(p);
     }
     return (philo);
 }
@@ -81,7 +73,6 @@ void    *monitor(void *data)
             {
                 dead_philo_id = i;
                 d->philos[i].status = dead;
-                // message(d->philos[i].id, "died.");
             }
             log_philo_status(&d->philos[i]);
         }
