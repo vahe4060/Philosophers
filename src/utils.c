@@ -12,7 +12,7 @@
 
 #include "philosophers.h"
 
-size_t	get_current_time(void)
+long	get_current_time(void)
 {
 	struct timeval	time;
 
@@ -76,6 +76,11 @@ void	log_philo_status(t_philo *philo)
 	message("Philo ");
 	ft_putnbr(philo->id);
 	message(": ");
+	if (philo->n_meals >= 0) {
+		message("to eat: ");
+		ft_putnbr(philo->n_meals);
+		message(", status: ");
+	}
 	message(color[philo->status]);
 	message(status_str[philo->status]);
 	message(color[5]);

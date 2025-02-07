@@ -14,22 +14,22 @@
 
 void	dream(t_philo *philo)
 {
-    if (philo->status == finished)
+    if (philo->status == FINISHED)
         return ;
-    philo->status = sleeping;
+    philo->status = SLEEPING;
     usleep(philo->data->sleep_time * 1000);
 }
 
 void	eat(t_philo *philo)
 {
     if (philo->n_meals == 0) {
-        philo->status = finished;
+        philo->status = FINISHED;
     }
     else
     {
         pthread_mutex_lock(philo->r_fork);
         pthread_mutex_lock(philo->l_fork);
-        philo->status = eating;
+        philo->status = EATING;
         usleep(philo->data->eat_time * 1000);
         if (philo->n_meals > 0) // if num_meals is set
            philo->n_meals--;
@@ -41,8 +41,8 @@ void	eat(t_philo *philo)
 
 void	think(t_philo *philo)
 {
-    if (philo->status != finished)
-        philo->status = thinking;
+    if (philo->status != FINISHED)
+        philo->status = THINKING;
 }
 
 void    *routine(void *philo)
@@ -51,7 +51,7 @@ void    *routine(void *philo)
 
     p = (t_philo *)philo;
 
-    while (p->status != finished)
+    while (p->status != FINISHED)
     {
         eat(p);
         dream(p);
@@ -83,7 +83,7 @@ void    *monitor(void *data)
                 && get_current_time() - d->philos[i].last_meal > d->time_to_die)
             {
                 dead_philo_id = i;
-                d->philos[i].status = dead;
+                d->philos[i].status = DEAD;
             }
             if (prev_status[i] != d->philos[i].status)
             {
@@ -91,7 +91,8 @@ void    *monitor(void *data)
                 prev_status[i] = d->philos[i].status;
             }
         }
-        if (status_changed) { // log status if there are any changes in status of any philo
+        if (status_changed)
+        { // log status if there are any changes in status of any philo
             log_time(d->start_time);
             i = -1;
             while (++i < d->n_philos)

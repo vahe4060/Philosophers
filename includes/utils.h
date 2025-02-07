@@ -15,6 +15,6 @@ void	log_time(long int start_time);
 int		init_args(int argc, char **argv, t_data *data);
 int		init_philos(t_data *data);
 // time utils
-size_t	get_current_time(void);
+long	get_current_time(void);
 
 #endif

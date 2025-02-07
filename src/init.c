@@ -60,7 +60,7 @@ int init_philos(t_data *data)
 	{
 		data->philos[i].data = data;
 		data->philos[i].id = i;
-		data->philos[i].status = thinking;
+		data->philos[i].status = THINKING;
 		data->philos[i].n_meals = data->n_meals;
 		data->philos[i].last_meal = get_current_time();
 		++i;

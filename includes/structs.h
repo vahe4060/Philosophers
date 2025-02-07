@@ -32,7 +32,7 @@ typedef struct	s_philo
 	pthread_t		thread;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
-	size_t			last_meal;
+	long			last_meal;
 } t_philo;
 
 void	dream(t_philo *philo);

@@ -12,11 +12,11 @@ TIME_TO_SLEEP\t- time each philosopher spends sleeping (ms)\n\
 #define MALLOC_ERROR "Memory Error\n"
 
 typedef enum s_status {
-	eating = 0,
-	sleeping,
-	thinking,
-	dead,
-	finished
+	EATING = 0,
+	SLEEPING,
+	THINKING,
+	DEAD,
+	FINISHED
 } t_status;
 
 static const char status_str[5][10] = {
