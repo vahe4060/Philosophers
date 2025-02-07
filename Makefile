@@ -11,6 +11,7 @@ INC = $(INC_DIR)/philosophers.h \
 	  $(INC_DIR)/structs.h
 SRC = main.c \
       init.c \
+	  utils.c \
       routine.c
 OBJ = $(SRC:%.c=$(BUILD_DIR)/%.o)
 
@@ -30,7 +31,7 @@ clean:
 
 re: clean all
 
-debug:
-	@$(MAKE) CFLAGS+=" -g" re
+debug: CFLAGS+=-g
+debug: re
 
 .PHONY: all, clean, fclean, re

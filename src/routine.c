@@ -1,16 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vyepremy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/23 21:09:27 by vyepremy          #+#    #+#             */
+/*   Updated: 2024/07/27 16:56:09 by vyepremy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
-
-size_t	get_current_time(void)
-{
-	struct timeval	time;
-
-	if (gettimeofday(&time, NULL) == -1)
-		write(1, "gettimeofday() error\n", 22);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
-}
 
 void	dream(t_philo *philo)
 {
+    if (philo->status == finished)
+        return ;
     philo->status = sleeping;
     usleep(philo->data->sleep_time * 1000);
 }
@@ -36,7 +41,8 @@ void	eat(t_philo *philo)
 
 void	think(t_philo *philo)
 {
-    philo->status = thinking;
+    if (philo->status != finished)
+        philo->status = thinking;
 }
 
 void    *routine(void *philo)
@@ -59,22 +65,38 @@ void    *monitor(void *data)
     t_data  *d;
     int     i;
     int     dead_philo_id;
+    int     status_changed;
 
+    status_changed = 1;
     dead_philo_id = -1;
     d = (t_data *)data;
+    t_status prev_status[d->n_philos];
+    i = -1;
+    while (++i < d->n_philos)
+        prev_status[i] = d->philos[i].status;
     while (dead_philo_id < 0)
     {
-        log_time(d->start_time);
         i = -1;
         while (++i < d->n_philos)
         {
-            if (d->philos[i].n_meals > 0
+            if (d->philos[i].n_meals != 0
                 && get_current_time() - d->philos[i].last_meal > d->time_to_die)
             {
                 dead_philo_id = i;
                 d->philos[i].status = dead;
             }
-            log_philo_status(&d->philos[i]);
+            if (prev_status[i] != d->philos[i].status)
+            {
+                status_changed = 1;
+                prev_status[i] = d->philos[i].status;
+            }
+        }
+        if (status_changed) { // log status if there are any changes in status of any philo
+            log_time(d->start_time);
+            i = -1;
+            while (++i < d->n_philos)
+                log_philo_status(&d->philos[i]);
+            status_changed = 0;
         }
     }
     return (data);
