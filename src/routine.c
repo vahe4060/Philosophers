@@ -66,7 +66,9 @@ void    *monitor(void *data)
     int     i;
     int     dead_philo_id;
     int     status_changed;
+    int     n_finished;
 
+    n_finished = 0;
     status_changed = 1;
     dead_philo_id = -1;
     d = (t_data *)data;
@@ -74,11 +76,14 @@ void    *monitor(void *data)
     i = -1;
     while (++i < d->n_philos)
         prev_status[i] = d->philos[i].status;
-    while (dead_philo_id < 0)
+    while (dead_philo_id < 0 && n_finished < d->n_philos)
     {
+        n_finished = 0;
         i = -1;
         while (++i < d->n_philos)
         {
+            if (d->philos[i].status == FINISHED)
+                n_finished++;
             if (d->philos[i].n_meals != 0
                 && get_current_time() - d->philos[i].last_meal > d->time_to_die)
             {
