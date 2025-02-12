@@ -14,7 +14,7 @@
 
 void	dream(t_philo *philo)
 {
-    if (philo->status == FINISHED || philo->terminate)
+    if (philo->status == FINISHED)
         return ;
     philo->status = SLEEPING;
     usleep(philo->data->sleep_time * 1000);
@@ -22,7 +22,7 @@ void	dream(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-    if (philo->status == FINISHED || philo->terminate)
+    if (philo->status == FINISHED)
         return ;
     if (philo->n_meals == 0) {
         philo->status = FINISHED;
@@ -43,7 +43,7 @@ void	eat(t_philo *philo)
 
 void	think(t_philo *philo)
 {
-    if (philo->status != FINISHED && !philo->terminate)
+    if (philo->status != FINISHED)
         philo->status = THINKING;
 }
 
@@ -52,7 +52,7 @@ void    *routine(void *philo)
     t_philo *p;
 
     p = (t_philo *)philo;
-    while (p->status != FINISHED)
+    while (p->status != FINISHED && p->terminate == 0)
     {
         eat(p);
         dream(p);
