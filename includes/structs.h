@@ -32,6 +32,7 @@ typedef struct	s_philo
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
 	long			last_meal;
+	int				terminate;
 } t_philo;
 
 void	dream(t_philo *philo);
@@ -39,5 +40,6 @@ void	eat(t_philo *philo);
 void	think(t_philo *philo);
 void	*routine(void *philo);
 void	*monitor(void *data);
+void	destroy_data(t_data *data);
 
 #endif

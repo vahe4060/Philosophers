@@ -14,7 +14,7 @@
 
 void	dream(t_philo *philo)
 {
-    if (philo->status == FINISHED)
+    if (philo->status == FINISHED || philo->terminate)
         return ;
     philo->status = SLEEPING;
     usleep(philo->data->sleep_time * 1000);
@@ -22,7 +22,7 @@ void	dream(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-    if (philo->status == FINISHED)
+    if (philo->status == FINISHED || philo->terminate)
         return ;
     if (philo->n_meals == 0) {
         philo->status = FINISHED;
@@ -43,7 +43,7 @@ void	eat(t_philo *philo)
 
 void	think(t_philo *philo)
 {
-    if (philo->status != FINISHED)
+    if (philo->status != FINISHED && !philo->terminate)
         philo->status = THINKING;
 }
 
@@ -52,7 +52,6 @@ void    *routine(void *philo)
     t_philo *p;
 
     p = (t_philo *)philo;
-
     while (p->status != FINISHED)
     {
         eat(p);
@@ -107,6 +106,12 @@ void    *monitor(void *data)
             status_changed = 0;
         }
     }
+    if (dead_philo_id >= 0)
+    {
+        i = -1;
+        while (++i < d->n_philos)
+            d->philos[i].terminate = 1;
+    }
     return (NULL);
 }
 
@@ -122,7 +127,13 @@ void    start_dinner(t_data *data)
     i = -1;
     while (++i < data->n_philos)
         pthread_join(data->philos[i].thread, NULL);
-    // cleanup after all threads are done
+    destroy_data(data);
+}
+
+void    destroy_data(t_data *data)
+{
+    int i;
+
     i = -1;
     while (++i < data->n_philos)
         pthread_mutex_destroy(data->philos[i].l_fork);
