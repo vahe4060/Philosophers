@@ -20,7 +20,6 @@ typedef struct	s_data
 	pthread_t		*philo_threads;
 	pthread_t		*monitor_thread;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	*is_running_mutex;
 } t_data;
 
 typedef struct	s_philo
