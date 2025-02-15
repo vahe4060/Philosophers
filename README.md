@@ -15,32 +15,32 @@ This project simulates the classic "Dining Philosophers" problem using multithre
     # TIME_TO_SLEEP   - time each philosopher spends sleeping (ms)
     # [NUM_MEALS]     - optional, number of meals for each philosopher.
 
-```diff
+```html
 ## Example
-
+    <p style="color:#FF0000";>Red paragraph text</p>
     vbox@demo:~/philosophers$ ./philosophers 3 100 40 20 3
     Time: 0ms
-+    Philo 0: to eat: 3, status: eating   
+    Philo 0: to eat: 3, status: eating   
     Philo 1: to eat: 3, status: thinking 
     Philo 2: to eat: 3, status: thinking 
     Time: 43ms
     Philo 0: to eat: 2, status: sleeping 
     Philo 1: to eat: 3, status: thinking 
-+    Philo 2: to eat: 3, status: eating   
+    Philo 2: to eat: 3, status: eating   
     Time: 68ms
     Philo 0: to eat: 2, status: thinking 
     Philo 1: to eat: 3, status: thinking 
-+    Philo 2: to eat: 3, status: eating   
+    Philo 2: to eat: 3, status: eating   
     Time: 88ms
     Philo 0: to eat: 2, status: thinking 
     Philo 1: to eat: 3, status: thinking 
     Philo 2: to eat: 2, status: sleeping 
     Time: 113ms
     Philo 0: to eat: 2, status: thinking 
-+    Philo 1: to eat: 3, status: eating   
+    Philo 1: to eat: 3, status: eating   
     Philo 2: to eat: 2, status: thinking 
     Time: 148ms
--    Philo 0: to eat: 2, status: dead
+    Philo 0: to eat: 2, status: dead
     Philo 1: to eat: 2, status: sleeping 
     Philo 2: to eat: 2, status: thinking 
 
