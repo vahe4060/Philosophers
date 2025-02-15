@@ -15,7 +15,13 @@ This project simulates the classic "Dining Philosophers" problem using multithre
     # TIME_TO_SLEEP   - time each philosopher spends sleeping (ms)
     # [NUM_MEALS]     - optional, number of meals for each philosopher.
 
+
 <code style="color : name_color">text</code>
+
+```diff
++ this text is highlighted in green
+- this text is highlighted in red
+```
 
 ## Example
 
