@@ -17,7 +17,8 @@ This project simulates the classic "Dining Philosophers" problem using multithre
 
 ```html
 ## Example
-    <p style="color:#FF0000";>Red paragraph text</p>
+<span style="color: red;">This is red text</span>
+
     vbox@demo:~/philosophers$ ./philosophers 3 100 40 20 3
     Time: 0ms
     Philo 0: to eat: 3, status: eating   
