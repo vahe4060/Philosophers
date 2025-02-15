@@ -17,13 +17,11 @@ This project simulates the classic "Dining Philosophers" problem using multithre
 
 ```html
 ## Example
-<span style="color: red;">This is red text</span>
-
     vbox@demo:~/philosophers$ ./philosophers 3 100 40 20 3
     Time: 0ms
     Philo 0: to eat: 3, status: eating   
     Philo 1: to eat: 3, status: thinking 
-    Philo 2: to eat: 3, status: thinking 
+    Philo 2: to eat: 3, status: <span style="color: yellow;">thinking</span> 
     Time: 43ms
     Philo 0: to eat: 2, status: sleeping 
     Philo 1: to eat: 3, status: thinking 
