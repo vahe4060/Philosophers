@@ -127,6 +127,7 @@ void    start_dinner(t_data *data)
     i = -1;
     while (++i < data->n_philos)
         pthread_join(data->philos[i].thread, NULL);
+    pthread_join(*data->monitor_thread, NULL);
     destroy_data(data);
 }
 
