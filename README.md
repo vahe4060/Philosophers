@@ -21,7 +21,7 @@ This project simulates the classic "Dining Philosophers" problem using multithre
     Time: 0ms
     Philo 0: to eat: 3, status: eating   
     Philo 1: to eat: 3, status: thinking 
-    Philo 2: to eat: 3, status: <span style="color: yellow;">thinking</span> 
+    Philo 2: to eat: 3, status: thinking 
     Time: 43ms
     Philo 0: to eat: 2, status: sleeping 
     Philo 1: to eat: 3, status: thinking 
