@@ -4,7 +4,7 @@ This project simulates the classic "Dining Philosophers" problem using multithre
 
 
 ## How to run
-	git clone https://github.com/vahe4060/Philosophers.git; cd Philosophers
+    git clone https://github.com/vahe4060/Philosophers.git; cd Philosophers
     make
     ./philosophers 
     # Usage:
@@ -15,7 +15,6 @@ This project simulates the classic "Dining Philosophers" problem using multithre
     # TIME_TO_SLEEP   - time each philosopher spends sleeping (ms)
     # [NUM_MEALS]     - optional, number of meals for each philosopher.
 
-```html
 ## Example
     vbox@demo:~/philosophers$ ./philosophers 3 100 40 20 3
     Time: 0ms
@@ -42,5 +41,3 @@ This project simulates the classic "Dining Philosophers" problem using multithre
     Philo 0: to eat: 2, status: dead
     Philo 1: to eat: 2, status: sleeping 
     Philo 2: to eat: 2, status: thinking 
-
-```
